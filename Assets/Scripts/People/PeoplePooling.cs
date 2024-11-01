@@ -7,12 +7,11 @@ public class PeoplePooling : MonoBehaviour
     public GameObject casual_Male_K; // Man 프리팹
     public GameObject casual_Female_K; // Woman 프리팹
     public GameObject MainCar; // MainCar (씬에 있는 에셋)
-    public int poolSize = 10; // 풀링할 객체 수
-    public float spawnRadius = 30.0f; // 객체가 생성될 반경
+    public int poolSize = 50; // 풀링할 객체 수
+    public float spawnRadius = 5.0f; // 객체가 생성될 반경
     public float objectMoveSpeed = 2.0f; // 객체의 이동 속도
 
     private List<GameObject> objectPool; // 풀링된 객체 목록
-    private List<Vector3> relativePositions; // MainCar 기준 상대 위치
     private bool useManPrefab = true; // Man과 Woman 프리팹을 번갈아 생성하는 플래그
 
     void Start()
@@ -31,9 +30,8 @@ public class PeoplePooling : MonoBehaviour
             return;
         }
 
-        // Object Pool 및 상대 위치 목록 초기화
+        // Object Pool 초기화
         objectPool = new List<GameObject>();
-        relativePositions = new List<Vector3>();
 
         for (int i = 0; i < poolSize; i++)
         {
@@ -42,20 +40,18 @@ public class PeoplePooling : MonoBehaviour
             useManPrefab = !useManPrefab; // 다음 번에는 다른 프리팹을 사용
 
             GameObject obj = Instantiate(prefabToUse);
-            Debug.Log("Instantiated: " + obj.name); // 객체의 이름을 출력
             obj.SetActive(false); // 초기 상태는 비활성화
             objectPool.Add(obj);
-
-            // MainCar 주변의 랜덤 위치 설정
-            Vector3 randomPosition = Random.insideUnitSphere * spawnRadius;
-            randomPosition.y = 0; // y축은 고정 (2D 평면에서 이동)
-            relativePositions.Add(randomPosition);
         }
     }
 
     void Update()
     {
-        if (MainCar == null) return; // MainCar가 없으면 업데이트 중단
+        if (MainCar == null)
+        {
+            Debug.LogError("MainCar is missing.");
+            return;
+        }
 
         for (int i = 0; i < poolSize; i++)
         {
@@ -65,14 +61,15 @@ public class PeoplePooling : MonoBehaviour
             if (!obj.activeInHierarchy)
             {
                 obj.SetActive(true);
-                Debug.Log("Activating object: " + obj.name); // 객체 이름 출력
             }
 
-            // MainCar 주변으로 객체 이동 (상대적 위치 유지)
-            Vector3 targetPosition = MainCar.transform.position + relativePositions[i];
-            obj.transform.position = Vector3.Lerp(obj.transform.position, targetPosition, Time.deltaTime * objectMoveSpeed);
+            // MainCar 주변의 랜덤 목표 위치 생성
+            Vector3 randomPosition = Random.insideUnitSphere * spawnRadius;
+            randomPosition.y = 0; // y축은 고정 (2D 평면에서 이동)
+            Vector3 targetPosition = MainCar.transform.position + randomPosition;
 
-            Debug.Log("Object position: " + obj.transform.position); // 객체 위치 정보 출력
+            // MoveTowards를 사용해 목표 위치로 점진적으로 이동
+            obj.transform.position = Vector3.MoveTowards(obj.transform.position, targetPosition, Time.deltaTime * objectMoveSpeed);
         }
     }
 }
