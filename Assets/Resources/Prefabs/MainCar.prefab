@@ -3102,13 +3102,14 @@ GameObject:
   - component: {fileID: 4608772896324007611}
   - component: {fileID: 2318484917828051811}
   - component: {fileID: 3114071094177987774}
+  - component: {fileID: 3492421633337060293}
   m_Layer: 0
   m_Name: MainCar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4929018535775754
 Transform:
   m_ObjectHideFlags: 0
@@ -3144,8 +3145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 15
-  acceleration: 4
-  deceleration: 6
+  acceleration: 2
+  deceleration: 3
   turnSpeed: 1.5
   maxSteerAngle: 30
   wheelRotationSpeed: 360
@@ -3195,8 +3196,20 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &3492421633337060293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780351737568190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed9020dc025998743ba5b1d56c00b3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1791251313518316
 GameObject:
   m_ObjectHideFlags: 0
