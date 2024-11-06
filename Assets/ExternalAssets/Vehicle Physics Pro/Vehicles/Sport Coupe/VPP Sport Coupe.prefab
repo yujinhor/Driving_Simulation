@@ -842,6 +842,7 @@ GameObject:
   - component: {fileID: 878697143685135272}
   - component: {fileID: 3770660044004885190}
   - component: {fileID: 8095049102202327608}
+  - component: {fileID: 6481301044451145784}
   m_Layer: 8
   m_Name: VPP Sport Coupe
   m_TagString: Untagged
@@ -1396,6 +1397,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a425db31983826948bb8c0100714a22a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6481301044451145784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069814030545375925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fa940e66a73089449a87379433e1940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2616001278828221896
