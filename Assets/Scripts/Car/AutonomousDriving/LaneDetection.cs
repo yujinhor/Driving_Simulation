@@ -13,7 +13,8 @@ public class LaneDetection : MonoBehaviour
     public float handleSensitivity = 3.0f; // 핸들 민감도 조정
 
     private string folderPath;
-    public CarControllerMain carController; // 차량 제어 스크립트 연결
+    //public CarControllerMain carController; // 차량 제어 스크립트 연결
+     private float steeringAngle;
 
     void Start()
     {
@@ -33,12 +34,12 @@ public class LaneDetection : MonoBehaviour
         {
             // 이미지를 캡처하고 차선에 따른 핸들 값을 계산
             Texture2D image = CaptureImage();
-            float steeringAngle = CalculateSteeringAngle(image);
+            steeringAngle = CalculateSteeringAngle(image);
 
             Debug.Log($"핸들 각도: {steeringAngle}");
 
             // 차량 핸들 조작 적용
-            carController.SetSteering(steeringAngle);
+            //carController.SetSteering(steeringAngle);
 
             yield return new WaitForSeconds(0.5f); // 0.5초마다 이미지 캡처 및 분석
         }
@@ -104,5 +105,8 @@ public class LaneDetection : MonoBehaviour
 
         return -steeringAngle;
     }
-
+    public float GetSteeringAngle()
+    {
+        return steeringAngle;
+    }
 }

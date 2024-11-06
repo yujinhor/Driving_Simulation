@@ -8,6 +8,13 @@ public class LowQualityToggleController : MonoBehaviour
 
     private void Start()
     {
+        // targetObject가 할당되지 않은 경우 초기화 중단
+        if (targetObject == null)
+        {
+            Debug.LogWarning("Target Object is not assigned, skipping initialization.");
+            return;
+        }
+
         // Toggle의 상태가 변경될 때 이벤트 연결
         objectToggle.onValueChanged.AddListener(delegate { ToggleObject(objectToggle.isOn); });
 
@@ -17,6 +24,9 @@ public class LowQualityToggleController : MonoBehaviour
 
     private void ToggleObject(bool isOn)
     {
-        targetObject.SetActive(isOn);
+        if (targetObject != null)
+        {
+            targetObject.SetActive(isOn);
+        }
     }
 }
