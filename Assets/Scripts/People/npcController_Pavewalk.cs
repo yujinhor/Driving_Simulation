@@ -19,7 +19,7 @@ public class npcController_Pavewalk : MonoBehaviour
     private float timer = 0f;
     private int state = 0; // 0 = 차량 빨간불, 1 = 차량 초록불, 2 = 차량 노란불
 
-    private bool isCrossing = false; // 보행자가 횡단보도에 있는지 여부
+    private bool canCrossing = true; // 보행자가 횡단보도에 있는지 여부
 
     void Start()
     {
@@ -36,7 +36,7 @@ public class npcController_Pavewalk : MonoBehaviour
 
     void Update()
     {
-        crosswalk(); // 신호등 상태 확인
+        crosswalk();
     }
 
     void crosswalk()
@@ -46,20 +46,24 @@ public class npcController_Pavewalk : MonoBehaviour
         switch (state)
         {
             case 0: // 차량 빨간불, 보행자 초록불
-
-                if (Vector3.Distance(transform.position, CrosswalkPoints[index].position) < minDistance)
+                if (canCrossing)
                 {
-                    index = (index + 1) % CrosswalkPoints.Length; // 순환 구조로 이동
+                    if (Vector3.Distance(transform.position, CrosswalkPoints[index].position) < minDistance)
+                    {
+                        index = (index + 1) % CrosswalkPoints.Length; // 순환 구조로 이동
+
+                    }
+
+                    agent.SetDestination(CrosswalkPoints[index].position);
+                    animator.SetFloat("vertical", !agent.isStopped ? 1 : 0);
+                    canCrossing = false;
                 }
 
-                agent.SetDestination(CrosswalkPoints[index].position);
-                animator.SetFloat("vertical", !agent.isStopped ? 1 : 0);
-
-                
                 if (timer > 10f) // 10초 후에 상태 전환
                 {
                     timer = 0f;
                     state = 1; // 다음 상태로 변경
+                    canCrossing = true;
                 }
                 break;
 
