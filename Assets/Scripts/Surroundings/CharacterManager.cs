@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -5,36 +6,59 @@ public class CharacterManager : MonoBehaviour
     public ObjectPool objectPool; // Object Pool 참조
     public Transform mainCar; // 메인 카 Transform
     public float radius = 50f; // 메인 카 반경
-    public Transform waypointParent; // Waypoint가 들어 있는 부모 오브젝트
-    private Transform[] waypoints; // 모든 Waypoint 배열
+    public GameObject waypointParent; // Waypoint Parent (GameObject)
+    public int maxCharacters = 3; // 생성할 캐릭터의 최대 수
+
+    private Transform[] waypoints; // Waypoints 배열
+    private HashSet<Transform> usedWaypoints = new HashSet<Transform>(); // 사용된 Waypoints
 
     void Start()
     {
-        // WaypointParent 아래 자식 오브젝트를 자동으로 배열에 추가
-        waypoints = new Transform[waypointParent.childCount];
-        for (int i = 0; i < waypointParent.childCount; i++)
+        // Waypoint Parent에서 모든 자식 Transform 가져오기
+        Transform parentTransform = waypointParent.transform;
+        waypoints = new Transform[parentTransform.childCount];
+        for (int i = 0; i < parentTransform.childCount; i++)
         {
-            waypoints[i] = waypointParent.GetChild(i); // 자식 Waypoint 가져오기
+            waypoints[i] = parentTransform.GetChild(i);
         }
     }
 
     void Update()
     {
-        foreach (Transform waypoint in waypoints)
+        List<Transform> activeWaypoints = GetActiveWaypoints();
+
+        // 현재 활성화된 Waypoint에서 캐릭터 생성
+        int charactersToSpawn = Mathf.Min(maxCharacters, activeWaypoints.Count);
+        for (int i = 0; i < charactersToSpawn; i++)
         {
-            float distance = Vector3.Distance(mainCar.position, waypoint.position);
-            if (distance <= radius)
+            Transform waypoint = activeWaypoints[Random.Range(0, activeWaypoints.Count)];
+            if (!usedWaypoints.Contains(waypoint))
             {
-                // 반경 내에 들어온 Waypoint라면 캐릭터 활성화
                 ActivateCharacterAtWaypoint(waypoint);
+                usedWaypoints.Add(waypoint);
             }
         }
     }
 
-    void ActivateCharacterAtWaypoint(Transform waypoint)
+    private List<Transform> GetActiveWaypoints()
     {
-        GameObject character = objectPool.GetObject(); // 풀에서 캐릭터 가져오기
-        character.transform.position = waypoint.position; // Waypoint 위치에 배치
-        character.GetComponent<CharacterAI>().StartMoving(); // 이동 시작
+        List<Transform> activeWaypoints = new List<Transform>();
+        foreach (Transform waypoint in waypoints)
+        {
+            if (Vector3.Distance(mainCar.position, waypoint.position) <= radius)
+            {
+                activeWaypoints.Add(waypoint);
+            }
+        }
+        return activeWaypoints;
+    }
+
+    private void ActivateCharacterAtWaypoint(Transform waypoint)
+    {
+        GameObject character = objectPool.GetObject();
+        character.transform.position = waypoint.position;
+        CharacterAI ai = character.GetComponent<CharacterAI>();
+        ai.SetWaypointsParent(waypointParent); // Waypoint Parent 전달
+        ai.StartMoving();
     }
 }

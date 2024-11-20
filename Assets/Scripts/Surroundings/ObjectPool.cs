@@ -3,43 +3,38 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-    public GameObject prefab; // 캐릭터 프리팹
-    public int initialPoolSize = 10; // 초기 생성할 오브젝트 수
-    private Queue<GameObject> pool = new Queue<GameObject>();
+    public GameObject[] prefabs; // 여러 종류의 캐릭터 프리팹
+    public int initialPoolSize = 10;
+    private List<GameObject> pool = new List<GameObject>();
 
-    // 풀 초기화
     void Start()
     {
-        for (int i = 0; i < initialPoolSize; i++)
+        foreach (var prefab in prefabs)
         {
-            GameObject obj = Instantiate(prefab);
-            obj.SetActive(false); // 비활성화 상태로 풀에 추가
-            pool.Enqueue(obj);
+            for (int i = 0; i < initialPoolSize; i++)
+            {
+                GameObject obj = Instantiate(prefab);
+                obj.SetActive(false);
+                pool.Add(obj);
+            }
         }
     }
 
-    // 오브젝트 가져오기
     public GameObject GetObject()
     {
-        if (pool.Count > 0)
+        foreach (var obj in pool)
         {
-            GameObject obj = pool.Dequeue();
-            obj.SetActive(true);
-            return obj;
+            if (!obj.activeInHierarchy)
+            {
+                obj.SetActive(true);
+                return obj;
+            }
         }
-        else
-        {
-            // 필요 시 추가 생성
-            GameObject obj = Instantiate(prefab);
-            obj.SetActive(true);
-            return obj;
-        }
-    }
 
-    // 오브젝트 반환
-    public void ReturnObject(GameObject obj)
-    {
-        obj.SetActive(false);
-        pool.Enqueue(obj);
+        // 풀에 객체가 없으면 랜덤 프리팹 생성
+        int randomIndex = Random.Range(0, prefabs.Length);
+        GameObject newObj = Instantiate(prefabs[randomIndex]);
+        pool.Add(newObj);
+        return newObj;
     }
 }
