@@ -1,40 +1,101 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
     public ObjectPool objectPool; // Object Pool 참조
-    public Transform mainCar; // 메인 카 Transform
-    public float radius = 50f; // 메인 카 반경
-    public Transform waypointParent; // Waypoint가 들어 있는 부모 오브젝트
-    private Transform[] waypoints; // 모든 Waypoint 배열
+    public Transform mainCar; // MainCar Transform
+    public float radius = 50f; // MainCar 반경
+    public GameObject[] waypointParents; // 모든 WaypointParent 그룹
+    public int maxCharactersPerParent = 10; // 각 Parent 그룹당 최대 캐릭터 수
+
+    private Dictionary<GameObject, List<GameObject>> activeCharacters = new Dictionary<GameObject, List<GameObject>>();
 
     void Start()
     {
-        // WaypointParent 아래 자식 오브젝트를 자동으로 배열에 추가
-        waypoints = new Transform[waypointParent.childCount];
-        for (int i = 0; i < waypointParent.childCount; i++)
+        // 각 WaypointParent 그룹 초기화
+        foreach (var parent in waypointParents)
         {
-            waypoints[i] = waypointParent.GetChild(i); // 자식 Waypoint 가져오기
+            activeCharacters[parent] = new List<GameObject>();
         }
     }
 
     void Update()
     {
-        foreach (Transform waypoint in waypoints)
+        foreach (var parent in waypointParents)
         {
-            float distance = Vector3.Distance(mainCar.position, waypoint.position);
-            if (distance <= radius)
+            List<Transform> activeWaypoints = GetActiveWaypoints(parent);
+
+            // 이미 생성된 캐릭터의 수가 초과하지 않도록 관리
+            while (activeCharacters[parent].Count < maxCharactersPerParent && activeWaypoints.Count > 0)
             {
-                // 반경 내에 들어온 Waypoint라면 캐릭터 활성화
-                ActivateCharacterAtWaypoint(waypoint);
+                Transform waypoint = activeWaypoints[Random.Range(0, activeWaypoints.Count)];
+                CreateCharacterAtWaypoint(parent, waypoint);
+                activeWaypoints.Remove(waypoint); // 중복 생성 방지
             }
+
+            // 반경에서 벗어난 캐릭터 비활성화
+            DisableCharactersOutOfRange(parent, activeWaypoints);
         }
     }
 
-    void ActivateCharacterAtWaypoint(Transform waypoint)
+    private List<Transform> GetActiveWaypoints(GameObject waypointParent)
     {
-        GameObject character = objectPool.GetObject(); // 풀에서 캐릭터 가져오기
-        character.transform.position = waypoint.position; // Waypoint 위치에 배치
-        character.GetComponent<CharacterAI>().StartMoving(); // 이동 시작
+        List<Transform> activeWaypoints = new List<Transform>();
+        Transform parentTransform = waypointParent.transform;
+
+        foreach (Transform waypoint in parentTransform)
+        {
+            float distance = Vector3.Distance(mainCar.position, waypoint.position);
+            if (distance <= radius) // MainCar 반경 내 확인
+            {
+                activeWaypoints.Add(waypoint);
+            }
+        }
+
+        return activeWaypoints;
+    }
+
+    private void CreateCharacterAtWaypoint(GameObject waypointParent, Transform waypoint)
+    {
+        GameObject character = objectPool.GetObject();
+        character.transform.position = waypoint.position;
+        CharacterAI ai = character.GetComponent<CharacterAI>();
+        ai.SetWaypointsParent(waypointParent); // 해당 Parent 설정
+        ai.StartMoving();
+
+        // 활성 캐릭터 리스트에 추가
+        activeCharacters[waypointParent].Add(character);
+    }
+
+    private void DisableCharactersOutOfRange(GameObject waypointParent, List<Transform> activeWaypoints)
+    {
+        List<GameObject> toRemove = new List<GameObject>();
+
+        foreach (GameObject character in activeCharacters[waypointParent])
+        {
+            bool stillActive = false;
+
+            foreach (Transform waypoint in activeWaypoints)
+            {
+                if (Vector3.Distance(character.transform.position, waypoint.position) < radius)
+                {
+                    stillActive = true;
+                    break;
+                }
+            }
+
+            if (!stillActive)
+            {
+                character.SetActive(false); // 캐릭터 비활성화
+                toRemove.Add(character);
+            }
+        }
+
+        // 리스트에서 제거
+        foreach (GameObject character in toRemove)
+        {
+            activeCharacters[waypointParent].Remove(character);
+        }
     }
 }
