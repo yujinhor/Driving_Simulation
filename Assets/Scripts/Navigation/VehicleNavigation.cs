@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,14 +9,15 @@ public class VehicleNavigation : MonoBehaviour
     private List<Transform> allWaypoints = new List<Transform>(); // 자식 경유지 리스트
     private List<Transform> selectedWaypoints1 = new List<Transform>();
     private int Left_Waypoints = 0;
-    public Transform finalDestination; // 최종 목적지
+    private Transform finalDestination; // 최종 목적지
     public float minDistance = 10f; // 경유지와의 최소 거리 기준
     private float waypointDetectionRadius = 15f; // 경로와 경유지 사이의 최소 거리 기준
     private NavMeshAgent agent;
     private int currentWaypointIndex = 0; // 현재 목표 경유지 인덱스
     public LineRenderer vehiclePathLineRenderer; // 차량의 현재 위치에서 다음 경유지까지의 경로를 표시할 LineRenderer
     public LineRenderer waypointsPathLineRenderer; // 나머지 경유지들 간의 경로를 표시할 LineRenderer
-    private float minDistanceFromVehicle = 10.0f; // 차량과 경유지 사이의 최소 거리 기준
+    private float minDistanceFromVehicle = 15.0f; // 차량과 경유지 사이의 최소 거리 기준
+    private Coroutine pathUpdateCoroutine;
 
     private void Start()
     {
@@ -30,16 +32,10 @@ public class VehicleNavigation : MonoBehaviour
             }
         }
 
-
         SetupLineRenderer(vehiclePathLineRenderer);
         SetupLineRenderer(waypointsPathLineRenderer);
-
-        UpdatePath(); // 초기 경로 설정
-        DrawWaypointsPath(); // 경유지들 간의 경로를 설정
-        InvokeRepeating("UpdatePath", 0f, 3f); // 시작 시 즉시 호출, 이후 2초마다 호출
-        InvokeRepeating("DrawWaypointsPath", 0f, 3f); // 시작 시 즉시 호출, 이후 2초마다 호출
-
     }
+
 
     private void SetupLineRenderer(LineRenderer lineRenderer)
     {
@@ -53,13 +49,52 @@ public class VehicleNavigation : MonoBehaviour
     // 목적지를 설정하는 함수
     public void SetDestination(Transform newDestination)
     {
+        if (vehiclePathLineRenderer != null)
+        {
+            vehiclePathLineRenderer.enabled = true;
+        }
+
+        if (waypointsPathLineRenderer != null)
+        {
+            waypointsPathLineRenderer.enabled = true;
+        }
         finalDestination = newDestination;
         UpdatePath(); // 초기 경로 설정
         DrawWaypointsPath(); // 경유지들 간의 경로를 설정
+        StartPathUpdateRoutine(); // 반복 작업을 코루틴으로 실행
+    }
+
+    private void StartPathUpdateRoutine()
+    {
+        if (pathUpdateCoroutine != null)
+        {
+            StopCoroutine(pathUpdateCoroutine);
+        }
+        pathUpdateCoroutine = StartCoroutine(PathUpdateRoutine());
+    }
+
+    private IEnumerator PathUpdateRoutine()
+    {
+        while (true)
+        {
+            if (Left_Waypoints > 0)
+            {
+                UpdatePath();
+                DrawWaypointsPath();
+            }
+            else
+            {
+                Debug.Log("No waypoints left. Path updates paused.");
+                yield break; // 코루틴 종료
+            }
+
+            yield return new WaitForSeconds(1f); // 3초마다 실행
+        }
     }
 
     private void Update()
     {
+
         if (Left_Waypoints > 0)
         {
             Transform targetWaypoint = selectedWaypoints1[0];
@@ -72,7 +107,27 @@ public class VehicleNavigation : MonoBehaviour
                 Debug.Log("Arrived!!!!!!!!!");
             }
         }
+        else if (Left_Waypoints == 0)
+        {
+            // 최종 목적지에 도착한 경우 LineRenderer 비활성화
+            Debug.Log("Final destination reached. LineRenderers disabled.");
+            DisableLineRenderers();
+        }
     }
+
+    private void DisableLineRenderers()
+    {
+        if (vehiclePathLineRenderer != null)
+        {
+            vehiclePathLineRenderer.enabled = false;
+        }
+
+        if (waypointsPathLineRenderer != null)
+        {
+            waypointsPathLineRenderer.enabled = false;
+        }
+    }
+
 
     // 차량에서 다음 경유지까지의 경로를 업데이트하는 함수
     private void UpdatePath()
@@ -88,17 +143,17 @@ public class VehicleNavigation : MonoBehaviour
         {
             foreach (Vector3 corner in agentPath.corners)
             {
-                Debug.Log($"=== 코너 {corner} 검사 시작 ===");
+                //Debug.Log($"=== 코너 {corner} 검사 시작 ===");
 
                 foreach (Transform waypoint in allWaypoints)
                 {
                     float distance = Vector3.Distance(corner, waypoint.position);
-                    Debug.Log($"코너 {corner}와 경유지 {waypoint.name} 간 거리: {distance}");
+                    //Debug.Log($"코너 {corner}와 경유지 {waypoint.name} 간 거리: {distance}");
 
                     if (distance < waypointDetectionRadius)
                     {
                         float distanceFromVehicle = Vector3.Distance(transform.position, waypoint.position);
-                        Debug.Log($"경유지 {waypoint.name}가 코너 {corner}에 가까움 (거리: {distance})");
+                        //Debug.Log($"경유지 {waypoint.name}가 코너 {corner}에 가까움 (거리: {distance})");
 
                         // 차량과의 거리가 충분히 멀고 경로에 가까운 경유지들만 추가
                         if (distanceFromVehicle > minDistanceFromVehicle)
@@ -106,38 +161,31 @@ public class VehicleNavigation : MonoBehaviour
                             if (!selectedWaypoints1.Contains(waypoint))
                             {
                                 selectedWaypoints1.Add(waypoint);
-                                Debug.Log($"경유지 {waypoint.name}가 경로에 가까워 선택됨.");
+                                //Debug.Log($"경유지 {waypoint.name}가 경로에 가까워 선택됨.");
                             }
                         }
                         else
                         {
-                            Debug.Log($"경유지 {waypoint.name}는 차량과 너무 가까워 선택되지 않음.");
+                            //Debug.Log($"경유지 {waypoint.name}는 차량과 너무 가까워 선택되지 않음.");
                         }
                     }
                 }
 
-                Debug.Log($"=== 코너 {corner} 검사 종료 ===");
+                //Debug.Log($"=== 코너 {corner} 검사 종료 ===");
             }
 
-            Debug.Log("정렬되기전 경유지들:");
+            //Debug.Log("정렬되기전 경유지들:");
             foreach (Transform waypoint in selectedWaypoints1)
             {
                 Debug.Log(waypoint.name);
             }
-
-            //// 현재 차량 위치와의 거리로 selectedWaypoints 정렬
-            //Vector3 currentPosition = transform.position;
-            //selectedWaypoints1.Sort((a, b) =>
-            //{
-            //    float distanceA = Vector3.Distance(currentPosition, a.position);
-            //    float distanceB = Vector3.Distance(currentPosition, b.position);
-            //    return distanceA.CompareTo(distanceB);
-            //});
         }
 
         Left_Waypoints = selectedWaypoints1.Count;
 
         Debug.Log("Left_Waypoints:" + Left_Waypoints);
+
+        if(Left_Waypoints == 0) { return; }
 
         // 차량 위치에서 다음 경유지까지의 경로만 NavMesh를 통해 계산
         Vector3 nextWaypoint2 = selectedWaypoints1[0].position;
@@ -167,6 +215,7 @@ public class VehicleNavigation : MonoBehaviour
     // 경유지들 간의 직선 경로를 그리는 함수 (경로 상에 있는 경유지들만 선택)
     private void DrawWaypointsPath()
     {
+
         List<Vector3> waypointsPathPoints = new List<Vector3>();
         Vector3 nextWaypoint = finalDestination.position;
         // 차량이 NavMeshAgent로 생성한 경로의 각 코너를 확인하고, 경로 근처의 경유지를 선택

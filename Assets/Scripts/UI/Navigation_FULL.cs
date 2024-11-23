@@ -6,7 +6,9 @@ public class Navigation_FULL : MonoBehaviour
     public Toggle controlToggle; // UI 토글
     public Transform destination1; // 첫 번째 목적지 위치
     public Transform destination2; // 두 번째 목적지 위치
-    public Transform destination3; // 세 번째 목적지 위치
+    public Transform destination3; // 세 번째 목적지
+    public Transform destination4; // 두 번째 목적지 위치
+    public Transform destination5; // 세 번째 목적지 위치
     public VehicleNavigation vehicleNavigation;
 
     private void Start()
@@ -38,5 +40,13 @@ public class Navigation_FULL : MonoBehaviour
     public void SetDestination3()
     {
         vehicleNavigation.SetDestination(destination3);
+    }
+    public void SetDestination4()
+    {
+        vehicleNavigation.SetDestination(destination4);
+    }
+    public void SetDestination5()
+    {
+        vehicleNavigation.SetDestination(destination5);
     }
 }
