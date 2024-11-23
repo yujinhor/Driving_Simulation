@@ -56,11 +56,7 @@ public class CameraManager : MonoBehaviour
             SwitchCamera(4);
         }
 
-        // 키 6, 7, 8에 대한 동작 구현
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            DisableCameras(1, 5); // 카메라 1~5 비활성화
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha6)) { SwitchCamera(5); }
     }
 
     public void SwitchCamera(int cameraIndex)

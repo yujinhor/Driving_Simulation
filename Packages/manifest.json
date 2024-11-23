@@ -1,6 +1,16 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "NPM",
+      "url": "https://registry.npmjs.com",
+      "scopes": [
+        "com.github.asus4"
+      ]
+    }
+  ],
   "dependencies": {
     "com.unity.ai.navigation": "1.1.5",
+    "com.unity.barracuda": "https://github.com/Unity-Technologies/barracuda-release.git",
     "com.unity.collab-proxy": "2.5.1",
     "com.unity.feature.development": "1.0.1",
     "com.unity.textmeshpro": "3.0.7",
