@@ -6,7 +6,7 @@ public class LaneDetection : MonoBehaviour
 {
     public Camera captureCamera; // 차량에 부착된 카메라
     public RenderTexture renderTexture; // 카메라에 연결된 RenderTexture
-    public float handleSensitivity = 1.0f; // 핸들 민감도 조정
+    public float handleSensitivity = 0.5f; // 핸들 민감도 조정
 
     private float steeringAngle;
 
@@ -105,9 +105,15 @@ public class LaneDetection : MonoBehaviour
 
         // 차량 중심과 차선 중심의 차이를 기반으로 핸들 조작 각도 계산
         float offset = laneCenterX - centerX;
-        float steeringAngle = handleSensitivity * offset / (renderTexture.width / 2f);
+        float normalizedOffset = handleSensitivity * offset / (renderTexture.width / 2f);
 
-        return -steeringAngle;
+        // 조향각 계산 및 범위 제한
+        float calculatedSteering = -handleSensitivity * normalizedOffset;
+        calculatedSteering = Mathf.Clamp(calculatedSteering, -1f, 1f);
+
+        return calculatedSteering;
+
+        //return -steeringAngle;
     }
 
     // 외부에서 조향각을 조회할 수 있는 함수
