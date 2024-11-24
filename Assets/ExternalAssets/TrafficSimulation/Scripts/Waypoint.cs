@@ -1,7 +1,4 @@
-﻿// Traffic Simulation
-// https://github.com/mchrbn/unity-traffic-simulation
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TrafficSimulation {
     public class Waypoint : MonoBehaviour {
