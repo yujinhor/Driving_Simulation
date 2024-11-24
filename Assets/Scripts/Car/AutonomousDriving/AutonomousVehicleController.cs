@@ -32,6 +32,7 @@ public class AutonomousVehicleController : MonoBehaviour
         {
             vpInput.externalThrottle = 0.3f; // 스로틀 값을 0.8로 설정
             vpInput.externalSteer = laneDetection.GetSteeringAngle(); // 차선 검출 값으로 스티어링 설정
+            Debug.Log("AutonomouseDrivingMode");
         }
         else
         {
