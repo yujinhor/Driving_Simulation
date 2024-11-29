@@ -3,9 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - AutonomousVehicle
-  - Waypoint
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -15,9 +13,15 @@ TagManager:
   - UI
   - HighQuailty
   - Navigation
+<<<<<<< Updated upstream
+  - 
+  - 
+  - 
+=======
   - AutonomousVehicle
-  - 
-  - 
+  - People
+  - Car
+>>>>>>> Stashed changes
   - 
   - 
   - 
