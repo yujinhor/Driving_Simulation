@@ -12,6 +12,7 @@ public class CameraManager : MonoBehaviour
 
     public Color normalColor = new Color(1f, 1f, 1f, 1f); // 기본 색상 (밝은 상태)
     public Color darkColor = new Color(0.5f, 0.5f, 0.5f, 1f); // 어두운 색상 (눌린 상태)
+    public GameObject YoloMiniCamera;
 
     void Awake()
     {
@@ -66,6 +67,25 @@ public class CameraManager : MonoBehaviour
         {
             cameras[currentCameraIndex].gameObject.SetActive(false); // 현재 카메라 비활성화
             cameras[cameraIndex].gameObject.SetActive(true); // 새로운 카메라 활성화
+
+            // 카메라 6번(인덱스 5)일 때 오브젝트 비활성화
+            if (cameraIndex == 5)
+            {
+                if (YoloMiniCamera != null)
+                {
+                    YoloMiniCamera.SetActive(false);
+                }
+            }
+            else
+            {
+                // 다른 카메라일 경우 오브젝트 활성화
+                if (YoloMiniCamera != null)
+                {
+                    YoloMiniCamera.SetActive(true);
+                }
+            }
+
+
             currentCameraIndex = cameraIndex; // 현재 카메라 인덱스 업데이트
         }
 

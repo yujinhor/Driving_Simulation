@@ -19,7 +19,7 @@ public class TrafficLightDetection : MonoBehaviour
                                      // 라벨 정보
                                      // model.Metadata["names"]에도 유사한 값이 저장되어 있지만, JSON 문자열로 등록되어 있어 표준 기능으로 파싱할 수 없으므로 별도로 정의함.
     private readonly string[] _labels = {
-        "light", "person", "car"};
+        "car", "light", "null", "person"};
 
     // Start is called before the first frame update
     void Start()
@@ -76,8 +76,8 @@ public class TrafficLightDetection : MonoBehaviour
                 if (activeCameraIndex == 5) { AddBoxOutline(ditects, scaleX, scaleY); };
                 AddBoxOutline_MiniCam(ditects, scaleX, scaleY, capturedImage);
 
-                // 다음 프레임까지 대기
-                yield return null;
+                // 다음 실행까지 0.5초 대기
+                yield return new WaitForSeconds(0.1f);
             }
         }
 
@@ -109,9 +109,9 @@ public class TrafficLightDetection : MonoBehaviour
         float canvasWidth = canvasRect.rect.width;
         float canvasHeight = canvasRect.rect.height;
 
-        // 화면 비율 조정 (1280x720 기준 비율)
-        float referenceWidth = 1280f;
-        float referenceHeight = 720f;
+        // 화면 비율 조정 (640x360 기준 비율)
+        float referenceWidth = 640f;
+        float referenceHeight = 360f;
         float scaleFactorX = canvasWidth / referenceWidth;
         float scaleFactorY = canvasHeight / referenceHeight;
 
@@ -129,9 +129,21 @@ public class TrafficLightDetection : MonoBehaviour
 
             // 클래스 ID에 따라 색상 결정
             Color lineColor = Color.red; // 기본 색상: 빨강
-            if (detection.classId == 0) // 0번 클래스: "light" (신호등)
+            if (detection.classId == 0) // 0번 클래스: "car"
             {
-                lineColor = Color.green; // 신호등은 초록색
+                lineColor = Color.blue; 
+            }
+            else if (detection.classId == 1) // 1번 클래스: "light"
+            {
+                lineColor = Color.green; 
+            }
+            else if (detection.classId == 2) // 2번 클래스: "person"
+            {
+                lineColor = Color.red;
+            }
+            else
+            {
+                continue;
             }
 
             // 4개의 선을 생성하여 박스 경계선을 그림
