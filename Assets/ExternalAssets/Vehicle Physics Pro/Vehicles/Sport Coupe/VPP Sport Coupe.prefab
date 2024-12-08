@@ -975,7 +975,7 @@ Rigidbody:
   m_Mass: 1403
   m_Drag: 0
   m_AngularDrag: 0
-  m_CenterOfMass: {x: 0.00000021699816, y: 0.36499977, z: 0.49800557}
+  m_CenterOfMass: {x: 0.00000015739352, y: 0.36499977, z: 0.4980055}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -1480,12 +1480,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2069814030545375925}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fa940e66a73089449a87379433e1940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _model: {fileID: 5022602860645237092, guid: 5a0983a2da4e1ca40a51828ccd0b4338, type: 3}
+  _model: {fileID: 5022602860645237092, guid: c02aec3e2da536849a38568e25278b25, type: 3}
   _imageView: {fileID: 0}
   canvas: {fileID: 0}
   CaptureCamera: {fileID: 3441201878853423555}
@@ -1502,7 +1502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaf2bf3c2296159439967ac4433003e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 50
+  radius: 100
 --- !u!114 &8771035242527725619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1518,9 +1518,9 @@ MonoBehaviour:
   rayLength: 3
   detectionLayer:
     serializedVersion: 2
-    m_Bits: 1537
-  rayHeightOffset: 1
-  rayBackwardOffset: 3
+    m_Bits: 1536
+  rayHeightOffset: 0.6
+  rayBackwardOffset: 0
 --- !u!1 &2132460948850449739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1536,7 +1536,7 @@ GameObject:
   - component: {fileID: 2154028899584014138}
   - component: {fileID: 4186131659014331037}
   - component: {fileID: 3378368004668712332}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Navi_dir
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2008,7 +2008,7 @@ GameObject:
   - component: {fileID: 4032754599748669610}
   - component: {fileID: 8530246284694859999}
   - component: {fileID: 8316933709901968163}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Navi_car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2815,7 +2815,7 @@ GameObject:
   - component: {fileID: 1659427008351912021}
   - component: {fileID: 3037801998483018920}
   - component: {fileID: 3847877709478499698}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Navi_dir (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
