@@ -60,6 +60,12 @@ namespace TrafficSimulation{
         void Start() // OnEnable 대신 Start 사용
         {
             InitializeWheels();
+
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.centerOfMass = new Vector3(0, -0.5f, 0); // 차량 무게 중심 조정
+            }
         }
 
         private void InitializeWheels()
