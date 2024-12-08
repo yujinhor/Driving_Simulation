@@ -16,24 +16,25 @@ public class FreeCameraMovement : MonoBehaviour
         float moveX = 0f;
         float moveZ = 0f;
 
-        // 방향키 입력 감지
-        if (Input.GetKey(KeyCode.LeftArrow))  // 왼쪽 방향키
+        // TFGH 입력 감지
+        if (Input.GetKey(KeyCode.F))  // 왼쪽 이동
         {
             moveX = -moveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.RightArrow)) // 오른쪽 방향키
+        if (Input.GetKey(KeyCode.H)) // 오른쪽 이동
         {
             moveX = moveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.UpArrow))    // 위쪽 방향키
+        if (Input.GetKey(KeyCode.T)) // 전진
         {
             moveZ = moveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.DownArrow))  // 아래쪽 방향키
+        if (Input.GetKey(KeyCode.G)) // 후진
         {
             moveZ = -moveSpeed * Time.deltaTime;
         }
 
+        // 카메라 이동 적용
         transform.Translate(new Vector3(moveX, 0, moveZ));
 
         // 마우스 입력을 통해 카메라 회전 처리
@@ -47,4 +48,3 @@ public class FreeCameraMovement : MonoBehaviour
         transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
     }
 }
-
