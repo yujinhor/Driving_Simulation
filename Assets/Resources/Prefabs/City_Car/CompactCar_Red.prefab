@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 207712125501040660}
   - component: {fileID: 3143237532928311821}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Back Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ GameObject:
   m_Component:
   - component: {fileID: 207712125501040662}
   - component: {fileID: 5242022318644883193}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Front Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 207712125501040664}
   - component: {fileID: 8109215351347174918}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Back Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 207712125501040666}
   - component: {fileID: 6777406019203111849}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Front Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 207712125501040668}
   - component: {fileID: 207712125503907900}
   - component: {fileID: 207712125502810876}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Car_Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,7 +380,8 @@ GameObject:
   - component: {fileID: 5136459580080483911}
   - component: {fileID: 3982909950639652574}
   - component: {fileID: 188102535089698034}
-  m_Layer: 0
+  - component: {fileID: 8371186873152478204}
+  m_Layer: 10
   m_Name: CompactCar_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,8 +446,8 @@ MonoBehaviour:
   maxTorque: 200
   brakeTorque: 100000
   unitType: 0
-  minSpeed: 10
-  maxSpeed: 50
+  minSpeed: 60
+  maxSpeed: 100
   leftWheelShape: {fileID: 1292783340300617615, guid: 0cbd9c8e87e13eb4ebee1710568d6bcc, type: 3}
   rightWheelShape: {fileID: 1551008267032633491, guid: 5ef4224173293904998ddd1c713df1d2, type: 3}
   animateWheels: 1
@@ -499,6 +500,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5267026, y: 1.3686919, z: 3.7690701}
   m_Center: {x: -0.008778453, y: 0.6671567, z: 0.17801571}
+--- !u!114 &8371186873152478204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207712125500552254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72eda9c3350d9e646ba431f06219672c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 50
+  mainCar: {fileID: 0}
 --- !u!1 &3522741820056403205
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,7 +523,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7378059294897721355}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Raycast Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +554,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2271779146025014655}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wheels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
