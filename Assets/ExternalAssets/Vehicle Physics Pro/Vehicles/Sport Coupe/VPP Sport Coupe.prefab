@@ -975,7 +975,7 @@ Rigidbody:
   m_Mass: 1403
   m_Drag: 0
   m_AngularDrag: 0
-  m_CenterOfMass: {x: 0.00000015739352, y: 0.36499977, z: 0.4980055}
+  m_CenterOfMass: {x: 0, y: 0.365, z: 0.498}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -3003,6 +3003,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car Audio
       objectReference: {fileID: 0}
+    - target: {fileID: 1606757270840104, guid: 0ba239054da355345bc3be88be60af08, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4275731641937160, guid: 0ba239054da355345bc3be88be60af08, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.557
@@ -3217,6 +3221,10 @@ PrefabInstance:
     - target: {fileID: 100066, guid: 0d5ccdc922f67f64eaa311fe8cade903, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100066, guid: 0d5ccdc922f67f64eaa311fe8cade903, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100068, guid: 0d5ccdc922f67f64eaa311fe8cade903, type: 3}
       propertyPath: m_Layer
@@ -3785,6 +3793,10 @@ PrefabInstance:
     - target: {fileID: 100004, guid: bf6fcf9cc4c0c1f40968e78cb1e81829, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: bf6fcf9cc4c0c1f40968e78cb1e81829, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: bf6fcf9cc4c0c1f40968e78cb1e81829, type: 3}
       propertyPath: m_RootOrder
