@@ -70,11 +70,13 @@ public class npcController_Pavewalk : MonoBehaviour
             case 1: // 차량 초록불, 보행자 빨간불
             case 2: // 차량 노란불, 보행자 빨간불
                 animator.SetFloat("vertical", 0);
-                if ((state == 1 && timer > 13f) || (state == 2 && timer > 3f))
-                {
-                    timer = 0f;
-                    state = (state == 1) ? 2 : 0; // 다음 상태로 전환
-                }
+                //if ((state == 1 && timer > 2f) || (state == 2 && timer > 2f))
+                //{
+                //    timer = 0f;
+                //    state = (state == 1) ? 2 : 0; // 다음 상태로 전환
+                //}
+                timer = 0f;
+                state = (state == 1) ? 2 : 0; // 다음 상태로 전환
                 break;
         }
     }
