@@ -57,20 +57,27 @@ namespace TrafficSimulation{
         private WheelCollider[] wheels;
         private float currentSteering = 0f;
 
-        void OnEnable(){
+        void Start() // OnEnable 대신 Start 사용
+        {
+            InitializeWheels();
+        }
+
+        private void InitializeWheels()
+        {
             wheels = GetComponentsInChildren<WheelCollider>();
 
-            for (int i = 0; i < wheels.Length; ++i) 
+            for (int i = 0; i < wheels.Length; ++i)
             {
-                var wheel = wheels [i];
+                var wheel = wheels[i];
 
-                // Create wheel shapes only when needed.
+                // Create wheel shapes only when needed
                 if (leftWheelShape != null && wheel.transform.localPosition.x < 0)
                 {
-                    var ws = Instantiate (leftWheelShape);
+                    var ws = Instantiate(leftWheelShape);
                     ws.transform.parent = wheel.transform;
                 }
-                else if(rightWheelShape != null && wheel.transform.localPosition.x > 0){
+                else if (rightWheelShape != null && wheel.transform.localPosition.x > 0)
+                {
                     var ws = Instantiate(rightWheelShape);
                     ws.transform.parent = wheel.transform;
                 }
@@ -79,8 +86,31 @@ namespace TrafficSimulation{
             }
         }
 
+        //void OnEnable(){
+        //    wheels = GetComponentsInChildren<WheelCollider>();
+
+        //    for (int i = 0; i < wheels.Length; ++i) 
+        //    {
+        //        var wheel = wheels [i];
+
+        //        // Create wheel shapes only when needed.
+        //        if (leftWheelShape != null && wheel.transform.localPosition.x < 0)
+        //        {
+        //            var ws = Instantiate (leftWheelShape);
+        //            ws.transform.parent = wheel.transform;
+        //        }
+        //        else if(rightWheelShape != null && wheel.transform.localPosition.x > 0){
+        //            var ws = Instantiate(rightWheelShape);
+        //            ws.transform.parent = wheel.transform;
+        //        }
+
+        //        wheel.ConfigureVehicleSubsteps(10, 1, 1);
+        //    }
+        //}
+
         public void Move(float _acceleration, float _steering, float _brake)
         {
+            //Debug.Log($"Move called: Acceleration = {_acceleration}, Steering = {_steering}, Brake = {_brake}");
 
             float nSteering = Mathf.Lerp(currentSteering, _steering, Time.deltaTime * steeringLerp);
             currentSteering = nSteering;

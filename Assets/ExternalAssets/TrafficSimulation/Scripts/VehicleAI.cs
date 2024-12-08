@@ -106,6 +106,12 @@ namespace TrafficSimulation {
         }
 
         void MoveVehicle(){
+            //장애물 차량 로직
+            if (!enabled)
+            {
+                Debug.Log("VehicleAI is disabled. Skipping MoveVehicle.");
+                return;
+            }
 
             //Default, full acceleration, no break and no steering
             float acc = 1;
