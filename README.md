@@ -1,3 +1,4 @@
+## Settings
 1. **Unity Editor**  
    - 버전: 2022.3.47f1  
    - (ProjectSettings/ProjectVersion.txt 에 `m_EditorVersion` 으로도 확인 가능)
@@ -5,8 +6,10 @@
 
 2. **Package Manager**  
    - Window → Package Manager → In Project → Resolve(⟳)  
-   - Packages/manifest.json 에 기록된 dependencies:  
+   - Packages/manifest.json 에 기록된 dependencies:
+     
 
+   ```jsonc
    "dependencies": {
     "com.unity.ai.navigation": "1.1.5",
     "com.unity.barracuda": "https://github.com/Unity-Technologies/barracuda-release.git",
@@ -47,9 +50,8 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
-
-![image](https://github.com/user-attachments/assets/6ed597de-090e-46cd-871c-bcb2a1a896f7)
+   }
+   ```
 
 
 ## Onboarding 절차  
